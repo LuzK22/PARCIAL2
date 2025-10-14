@@ -1,0 +1,95 @@
+Table Cliente {
+    id_cliente int [PK]
+    nombre_cliente varchar
+    apellido_cliente varchar
+    documento varchar [UNIQUE]
+    direccion varchar
+    telefono varchar
+
+}
+
+Table Plan {
+    id_plan int [PK]
+    id_servicio_plan int [FK]
+    nombre_plan varchar
+    tipo_plan varchar
+    precio_mensual decimal(10,2)
+    velocidad int
+
+}
+
+Table Contrato {
+    id_contrato int [PK]
+    id_cliente_contrato int [FK]
+    id_plan_contrato int [FK]
+    fecha_inicio Date 
+    fecha_fin Date
+    estado_contrato varchar
+
+}
+
+Table Factura {
+    id_factura int [PK]
+    id_contrato_factura int [FK]
+    fecha_emision Date 
+    fecha_vencimiento Date
+    monto_total decimal(10,2)
+    estado_factura varchar
+
+}
+ 
+Table Pago {
+    id_pago int [PK]
+    id_factura_pago int [FK]
+    fecha_pago Date 
+    monto_pagado decimal(10,2)
+    metodo_pago varchar
+
+}
+
+Table Empleado {
+    id_empleado int [PK]
+    id_sucursal_empleado int [FK]
+    nombre_empleado varchar
+    apellido_empleado varchar
+    puesto varchar
+    telefono varchar
+    email varchar   
+
+}
+
+Table Reclamo_soporte {
+    id_reclamo int [PK]
+    id_cliente int [FK]
+    id_empleado_reclamo int [FK]
+    fecha_reclamo Date 
+    descripcion_reclamo TEXT
+    estado_reclamo varchar
+
+}
+
+Table Sucursal {
+    id_sucursal int [PK]
+    nombre_sucursal varchar
+    direccion varchar
+    telefono varchar
+
+}
+
+Table Servicios_Adicionales {
+    id_servicio_adicional int [PK]
+    id_servicio int [FK]
+    nombre_servicio varchar
+    descripcion_servicio TEXT
+    costo decimal(10,2)
+
+}
+
+REF: Plan.id_plan > Contrato.id_plan_contrato
+REF: Contrato.id_contrato < Factura.id_contrato_factura
+REF: Factura.id_factura < Pago.id_factura_pago
+REF: Cliente.id_cliente < Reclamo_soporte.id_cliente
+REF: Sucursal.id_sucursal < Empleado.id_sucursal_empleado
+REF: Plan.id_plan < Servicios_Adicionales.id_servicio
+REF: Empleado.id_empleado < Reclamo_soporte.id_empleado_reclamo
+REF: Cliente.id_cliente < Plan.id_servicio_plan
